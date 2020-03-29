@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>使用GitHub Pages &#43; Hugo搭建靜態網站 // Timo&#39;s Blog</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="author" content="Timo Chiang">
+    <meta name="description" content="Timo&#39;s tech blog">
+    
+
+        <meta property="og:title" content="使用GitHub Pages &#43; Hugo搭建靜態網站" />
+    <meta property="og:description" content="Timo&#39;s tech blog" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:url" content="https://timochiang.github.io/posts/use-github-pages-and-hugo-to-build-static-site/" />
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="https://timochiang.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://timochiang.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://timochiang.github.io/css/style.css">
+    
+
+    <meta name="generator" content="Hugo 0.68.3" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://timochiang.github.io/">Timo&#39;s Blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">使用GitHub Pages &#43; Hugo搭建靜態網站</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/posts/use-github-pages-and-hugo-to-build-static-site/" class="article-date">
+                <time datetime='2020-03-29T18:31:35.000&#43;09:00' itemprop="datePublished">2020-03-29</time>
+            </a>
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>最近下定決心要開始寫技術文章，除了記錄下來自己的學習過程，也希望可以幫助到其他需要的人。</p>
+<p>由於之前也有嘗試寫過但因為懶惰而中斷。期望這次可以好好持續下去！</p>
+<hr>
+<h2 id="正題開始">正題開始</h2>
+<p>自己的需求取向如下：</p>
+<ul>
+<li>一個可以存放文章的地方（最好可以支援markdown）</li>
+<li>無廣告，而自己也沒有要從中獲取利潤（純粹紀錄＋分享）</li>
+</ul>
+<p>原本打算在medium寫文章，但研究了一下，medium覺得不太符合自己的需求取向。</p>
+<p>（medium比較適合從一開始就打算以類似出版的方式經營並從中獲取利潤的模式）</p>
+<p>最後決定先嘗試用GitHub Pages + Hugo來紀錄自己的文章。</p>
+<h2 id="準備好hugo">準備好Hugo</h2>
+<h3 id="為何選擇hugo">為何選擇Hugo?</h3>
+<p>Hugo是以Golang來快速生成靜態網站，而剛好最近也要學習Golang，於是沒多想就選擇他啦！</p>
+<h3 id="安裝hugo環境">安裝Hugo環境</h3>
+<p>註：以下皆在macOS環境下執行。使用的Hugo Theme為<a href="https://github.com/carsonip/hugo-theme-minos">hugo-theme-minos</a></p>
+<p>首先依照<a href="https://gohugo.io/getting-started/quick-start/">官方網站的步驟</a>安裝Hugo。（由於官方教學很清楚且步驟不多這裡就不贅述）</p>
+<p>照著步驟安裝完後，應該已經在<code>/content/posts/</code>底下生成一個<code>my-first-post.md</code>文件。</p>
+<p>並且已經成功啟動了Server，在http://localhost:1313看到已經搭建好的的網站。</p>
+<h3 id="編輯文章">編輯文章</h3>
+<p>除了建立一篇新文章之外，如何編輯文章也很重要。</p>
+<p>這邊簡單說明一下如何修改標題與編輯內文。</p>
+<p>在生成的檔案<code>my-first-post.md</code>中，可以發現已經有以下內容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">---
+title: &#34;My First Post&#34;
+date: 2020-03-29T16:51:38+09:00
+draft: true
+---
+</code></pre></div><ul>
+<li>title: 文章標題</li>
+<li>date: 文章的作成時間</li>
+<li>draft: 是否為草稿，如果沒有加上<code>-D</code> 參數，草稿文章便不會顯示</li>
+</ul>
+<p>這些是該文章的基本設定，而內文要在這個區塊底下開始。以下簡單用markdown來當範例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">---
+title: &#34;我的第一篇文章！&#34;
+date: 2020-03-29T16:51:38+09:00
+draft: true
+---
+<span style="color:#75715e">## 正文副標題
+</span><span style="color:#75715e"></span>
+我是一段文字
+
+<span style="color:#66d9ef">-</span> 我是清單一
+<span style="color:#66d9ef">-</span> 我是清單二
+<span style="color:#66d9ef">-</span> 我是清單三
+
+​```php
+&lt;?php
+    echo &#34;Hello world!&#34;;
+    
+​```
+</code></pre></div><p>Hugo預設有<a href="https://gohugo.io/getting-started/usage/#livereload">Livereload的功能</a>，所以儲存檔案後會直接反映：</p>
+<p><img src="/images/my-first-post-content.png" alt="my-first-post-content"></p>
+<p>成功添加一些內容進去囉！</p>
+<h2 id="部署至github-pages">部署至GitHub Pages</h2>
+<h3 id="建立github的repository">建立Github的repository</h3>
+<p>首先在GitHub上新增一個Github的repository，用來存放在Hugo生成靜態檔案。</p>
+<p><a href="https://pages.github.com">官方教學</a></p>
+<p>在建立之前有幾點要注意：</p>
+<ol>
+<li>如果Github是使用免費方案，repository必須設為公開（如果希望是非公開的話，bitbucket有提供幾乎一樣功能且可以存放在非公開的repository）</li>
+<li>repository的名字必須是<code>username.github.io</code>，<code>username</code>需要跟GitHub的username一致，否則會無法成功部署。而這會是等等公開網站的預設domain。（有買網域可以自行更換）</li>
+<li>如果GitHub的username有大寫，則會自動轉址到全部小寫的domain。例：username: <code>AbcDefg</code> -&gt; domain: <code>abcdefg.github.io</code></li>
+</ol>
+<h3 id="hugo內設定git">Hugo內設定git</h3>
+<p>接著回到Hugo資料夾，將本地的檔案連結至repository</p>
+<p>在生成靜態檔案前，需要先在config.toml中設定好baseURL=<code>username.github.io</code>，否則會無法正常讀取靜態檔案。</p>
+<p>生成靜態檔案，並設定git：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo <span style="color:#75715e">#生成靜態檔案，預設是public資料夾</span>
+                   | EN
+-------------------+-----
+  Pages            |  <span style="color:#ae81ff">6</span>
+  Paginator pages  |  <span style="color:#ae81ff">0</span>
+  Non-page files   |  <span style="color:#ae81ff">0</span>
+  Static files     | <span style="color:#ae81ff">26</span>
+  Processed images |  <span style="color:#ae81ff">0</span>
+  Aliases          |  <span style="color:#ae81ff">1</span>
+  Sitemaps         |  <span style="color:#ae81ff">1</span>
+  Cleaned          |  <span style="color:#ae81ff">0</span>
+
+$ cd /public
+$ git init
+$ git remote add origin git@github.com:username/username.github.io.git
+</code></pre></div><p>接著把public底下的檔案push到<code>username.github.io</code>上，就完成部署啦！</p>
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#正題開始">正題開始</a></li>
+    <li><a href="#準備好hugo">準備好Hugo</a>
+      <ul>
+        <li><a href="#為何選擇hugo">為何選擇Hugo?</a></li>
+        <li><a href="#安裝hugo環境">安裝Hugo環境</a></li>
+        <li><a href="#編輯文章">編輯文章</a></li>
+      </ul>
+    </li>
+    <li><a href="#部署至github-pages">部署至GitHub Pages</a>
+      <ul>
+        <li><a href="#建立github的repository">建立Github的repository</a></li>
+        <li><a href="#hugo內設定git">Hugo內設定git</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    
+</nav>
+
+</article>
+
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2020 Timo&#39;s Blog
+            <br />
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos" target="_blank">Minos</a>
+        </div>
+    </div>
+    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+</div>
+</body>
+</html>
