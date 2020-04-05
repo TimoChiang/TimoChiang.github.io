@@ -6,10 +6,21 @@
     <description>Recent content on Timo&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sun, 29 Mar 2020 18:31:35 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 03 Apr 2020 08:23:41 +0900</lastBuildDate>
     
 	<atom:link href="https://timochiang.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用GitHub Actions跑Go專案的測試</title>
+      <link>https://timochiang.github.io/posts/github-actions-golang/</link>
+      <pubDate>Fri, 03 Apr 2020 08:23:41 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/github-actions-golang/</guid>
+      <description>&lt;p&gt;GitHub Actions是一個把持續整合(Continuous integration)結合到GitHub上的服務。&lt;/p&gt;
+&lt;p&gt;比如說要執行測試或是deploy都可以在GitHub Actions上設定好，只要觸發條件便會自動化執行。&lt;/p&gt;
+&lt;p&gt;可以自訂腳本，也可以套用別人寫好的腳本，十分方便。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>使用GitHub Pages &#43; Hugo搭建靜態網站</title>

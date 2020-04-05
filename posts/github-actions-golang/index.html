@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>使用GitHub Actions跑Go專案的測試 // Timo&#39;s Blog</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="author" content="Timo Chiang">
+    <meta name="description" content="Timo&#39;s tech blog">
+    
+
+        <meta property="og:title" content="使用GitHub Actions跑Go專案的測試" />
+    <meta property="og:description" content="Timo&#39;s tech blog" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:url" content="https://timochiang.github.io/posts/github-actions-golang/" />
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="https://timochiang.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://timochiang.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://timochiang.github.io/css/style.css">
+    
+
+    <meta name="generator" content="Hugo 0.68.3" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://timochiang.github.io/">Timo&#39;s Blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">使用GitHub Actions跑Go專案的測試</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/posts/github-actions-golang/" class="article-date">
+                <time datetime='2020-04-03T08:23:41.000&#43;09:00' itemprop="datePublished">2020-04-03</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="https://timochiang.github.io/categories/github">GitHub</a>
+                    
+                </div>
+            </div>
+            
+            
+            <div class="article-comment-link-wrap">
+                <a href="/posts/github-actions-golang/#disqus_thread" class="article-comment-link">Comments</a>
+            </div>
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>GitHub Actions是一個把持續整合(Continuous integration)結合到GitHub上的服務。</p>
+<p>比如說要執行測試或是deploy都可以在GitHub Actions上設定好，只要觸發條件便會自動化執行。</p>
+<p>可以自訂腳本，也可以套用別人寫好的腳本，十分方便。</p>
+<p>public repositories可以免費使用。</p>
+<p>private repositories會有使用限制，超過了會依照方案收費。（<a href="https://help.github.com/en/github/setting-up-and-managing-billing-and-payments-on-github/about-billing-for-github-actions">詳細收費方式</a>）。</p>
+<hr>
+<p>本篇文章將介紹：</p>
+<ul>
+<li><a href="#github-actions%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F">GitHub Actions基本使用方式</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8github-actions%E6%B8%AC%E8%A9%A6go%E5%B0%88%E6%A1%88">使用GitHub Actions測試Go專案</a></li>
+</ul>
+<h2 id="github-actions基本使用方式">GitHub Actions基本使用方式</h2>
+<p>首先到想要添加GitHub Actions的repository主頁面點選Actions標籤：</p>
+<p><!-- raw HTML omitted --></p>
+<p>由於我的專案使用Go，系統推薦了Go的簡單Action。直接點選Set up this workflow來試試看。</p>
+<p>套用已經寫好的Action，實際上就是在repository裡面新增一個其他人寫好的的yml腳本，並放置在<code>.github/workflows/</code>路徑下。GitHub會自動抓取該路徑下的腳本並在指定條件下執行。</p>
+<p>直接先Commit來測試看看！這裡可以選擇在原分支commit或建立新的分支與Pull request。為了不影響master，這次選擇新建分支。</p>
+<p><img src="/images/github-actions-2.png" alt="github-actions-2"></p>
+<p>可以看到新增的Pull request已經出現了Action且已經在執行中。</p>
+<p><img src="/images/github-actions-3.png" alt="github-actions-3"></p>
+<p>點選Detail頁面可以看到詳細執行的過程。下圖表示Action已經Build成功了！</p>
+<p><img src="/images/github-actions-4.png" alt="github-actions-4"></p>
+<h2 id="使用github-actions測試go專案">使用GitHub Actions測試Go專案</h2>
+<p>搞定了基本使用方法後，接著來添加測試的功能。</p>
+<p>由於Go的基本測試十分簡單，只要執行<code>go test</code>即可。</p>
+<p>我們就在Build的步驟前添加以下內容即可。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">    - <span style="color:#66d9ef">name</span>: Test
+      <span style="color:#66d9ef">run</span>: go test ./...
+</code></pre></div><p>修改完後commit後，只要符合腳本裡<code>on</code>的條件便會自動執行，並且顯示在Actions裡。</p>
+<p>但這次跑完後，竟然出錯了！</p>
+<p><img src="/images/github-actions-5.png" alt="github-actions-5"></p>
+<p>原來問題不是在指令，而是我的Go專案跑測試時用到了MySQL，因為沒設置MySQL環境而出錯。</p>
+<p>加上其他服務的方式跟Docker Compose的環境配置類似。以MySQL為例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">    <span style="color:#66d9ef">services</span>:
+      <span style="color:#66d9ef">mysql</span>:
+        <span style="color:#66d9ef">image</span>: mysql:<span style="color:#ae81ff">5.7</span>
+        <span style="color:#66d9ef">ports</span>:
+          - <span style="color:#ae81ff">3307</span>:<span style="color:#ae81ff">3306</span>
+        <span style="color:#66d9ef">env</span>:
+          <span style="color:#66d9ef">MYSQL_DATABASE</span>: blog
+          <span style="color:#66d9ef">MYSQL_USER</span>: user 
+          <span style="color:#66d9ef">MYSQL_PASSWORD</span>: password
+          <span style="color:#66d9ef">MYSQL_ROOT_PASSWORD</span>: root   
+</code></pre></div><p>加上後再次執行就沒問題囉！</p>
+<p>參考連結：</p>
+<p><a href="https://freek.dev/1590-how-to-use-a-mysql-database-on-github-actions">https://freek.dev/1590-how-to-use-a-mysql-database-on-github-actions</a></p>
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#github-actions基本使用方式">GitHub Actions基本使用方式</a></li>
+    <li><a href="#使用github-actions測試go專案">使用GitHub Actions測試Go專案</a></li>
+  </ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/github-actions">GitHub Actions
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/testing">testing
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    
+    <a href="/posts/use-github-pages-and-hugo-to-build-static-site/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">使用GitHub Pages &#43; Hugo搭建靜態網站&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+
+</article>
+
+        
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "timoblog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2020 Timo&#39;s Blog
+            <br />
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos" target="_blank">Minos</a>
+        </div>
+    </div>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-162845066-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+</div>
+</body>
+</html>

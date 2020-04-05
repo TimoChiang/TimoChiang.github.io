@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GitHub Pages on Timo&#39;s Blog</title>
+    <link>https://timochiang.github.io/tags/github-pages/</link>
+    <description>Recent content in GitHub Pages on Timo&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 29 Mar 2020 18:31:35 +0900</lastBuildDate>
+    
+	<atom:link href="https://timochiang.github.io/tags/github-pages/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用GitHub Pages &#43; Hugo搭建靜態網站</title>
+      <link>https://timochiang.github.io/posts/use-github-pages-and-hugo-to-build-static-site/</link>
+      <pubDate>Sun, 29 Mar 2020 18:31:35 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/use-github-pages-and-hugo-to-build-static-site/</guid>
+      <description>&lt;p&gt;最近下定決心要開始寫技術文章，除了記錄下來自己的學習過程，也希望可以幫助到其他需要的人。&lt;/p&gt;
+&lt;p&gt;由於之前也有嘗試寫過但因為懶惰而中斷。期望這次可以好好持續下去！&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
