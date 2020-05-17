@@ -3,8 +3,48 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://timochiang.github.io/tags/cast/</loc>
+    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/posts/mysql-mariadb-cast/</loc>
+    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://timochiang.github.io/categories/</loc>
-    <lastmod>2020-04-03T08:23:41+09:00</lastmod>
+    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/categories/database/</loc>
+    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/tags/mariadb/</loc>
+    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/tags/mysql/</loc>
+    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/posts/</loc>
+    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/tags/</loc>
+    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/</loc>
+    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
   </url>
   
   <url>
@@ -18,22 +58,7 @@
   </url>
   
   <url>
-    <loc>https://timochiang.github.io/posts/</loc>
-    <lastmod>2020-04-03T08:23:41+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://timochiang.github.io/tags/</loc>
-    <lastmod>2020-04-03T08:23:41+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://timochiang.github.io/tags/testing/</loc>
-    <lastmod>2020-04-03T08:23:41+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://timochiang.github.io/</loc>
     <lastmod>2020-04-03T08:23:41+09:00</lastmod>
   </url>
   

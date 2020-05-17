@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CAST簡介、支援型別 // Timo&#39;s Blog</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="author" content="Timo Chiang">
+    <meta name="description" content="Timo&#39;s tech blog">
+    
+
+        <meta property="og:title" content="CAST簡介、支援型別" />
+    <meta property="og:description" content="Timo&#39;s tech blog" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:url" content="https://timochiang.github.io/posts/mysql-mariadb-cast/" />
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="https://timochiang.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://timochiang.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://timochiang.github.io/css/style.css">
+    
+
+    <meta name="generator" content="Hugo 0.68.3" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://timochiang.github.io/">Timo&#39;s Blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">CAST簡介、支援型別</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/posts/mysql-mariadb-cast/" class="article-date">
+                <time datetime='2020-05-17T07:38:56.000&#43;09:00' itemprop="datePublished">2020-05-17</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="https://timochiang.github.io/categories/database">Database</a>
+                    
+                </div>
+            </div>
+            
+            
+            <div class="article-comment-link-wrap">
+                <a href="/posts/mysql-mariadb-cast/#disqus_thread" class="article-comment-link">Comments</a>
+            </div>
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>工作上遇到了CAST小小的坑，在此紀錄一下。</p>
+<p>先說結論：MySQL與MariaDB對於CAST支援的型別不同。</p>
+<hr>
+<p>本篇文章重點：</p>
+<ul>
+<li><a href="#cast%E7%B0%A1%E4%BB%8B">CAST簡介</a></li>
+<li><a href="#cast%E6%94%AF%E6%8F%B4%E7%9A%84%E5%9E%8B%E5%88%A5">CAST支援的型別</a></li>
+</ul>
+<h2 id="cast簡介">CAST簡介</h2>
+<p>當我們在排序文字類型的數字時，如果直接使用order by將會取得錯誤的結果。</p>
+<p>例如原始資料：</p>
+<table>
+<thead>
+<tr>
+<th>id(INT)</th>
+<th>priority(VARCHAR)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>10</td>
+</tr>
+<tr>
+<td>3</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+<p>假設直接排序的話：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> articles <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> priority
+</code></pre></div><p>結果會是：</p>
+<table>
+<thead>
+<tr>
+<th>id(INT)</th>
+<th>priority(VARCHAR)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>10</td>
+</tr>
+<tr>
+<td>3</td>
+<td>25</td>
+</tr>
+<tr>
+<td>1</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>顯然與我們需求不符合。</p>
+<p>這時候其中一個解法可以用CAST來處理。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> articles <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#a6e22e">CAST</span>(priority <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">UNSIGNED</span>)
+</code></pre></div><p>（實務上盡可能把有數字排序需求的欄位設定成數字型別，以防止文字型別轉換成數字型別所帶來的額外時間成本）</p>
+<h2 id="cast支援的型別">CAST支援的型別</h2>
+<p>我遇到的狀況是，同事使用到了CAST的函數，在localhost開發時沒有出現問題。</p>
+<p>但當在測試環境時卻出現以下錯誤：</p>
+<pre><code>ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INT)' at line 1
+</code></pre><p>原來是因為在localhost裝的是MariaDB，但測試環境是裝MySQL。</p>
+<p>並且在CAST函數使用INT型別：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#a6e22e">CAST</span>(priority <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">INT</span>)
+</code></pre></div><p>（在MariaDB可以使用，不會報錯）</p>
+<p>網路上有少部分解答並沒有寫得很清楚，所以當初稍微翻了一下，才找到問題所在。</p>
+<p>其實文檔都有寫！</p>
+<p>MySQL的CAST：<a href="https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html#function_cast">https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html#function_cast</a></p>
+<p>MariaDB的CAST：<a href="https://mariadb.com/kb/en/cast/">https://mariadb.com/kb/en/cast/</a></p>
+<p>另外簡單寫了一個docker測試環境可以快速測試MySQL跟MariaDB：</p>
+<p><a href="https://github.com/TimoChiang/mysql-mariadb-cast-test">https://github.com/TimoChiang/mysql-mariadb-cast-test</a></p>
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#cast簡介">CAST簡介</a></li>
+    <li><a href="#cast支援的型別">CAST支援的型別</a></li>
+  </ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/mysql">MySQL
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/mariadb">MariaDB
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/cast">CAST
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    
+    <a href="/posts/github-actions-golang/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">使用GitHub Actions跑Go專案的測試&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+
+</article>
+
+        
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "timoblog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2020 Timo&#39;s Blog
+            <br />
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos" target="_blank">Minos</a>
+        </div>
+    </div>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-162845066-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+</div>
+</body>
+</html>

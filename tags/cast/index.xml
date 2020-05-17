@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CAST on Timo&#39;s Blog</title>
+    <link>https://timochiang.github.io/tags/cast/</link>
+    <description>Recent content in CAST on Timo&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 17 May 2020 07:38:56 +0900</lastBuildDate>
+    
+	<atom:link href="https://timochiang.github.io/tags/cast/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CAST簡介、支援型別</title>
+      <link>https://timochiang.github.io/posts/mysql-mariadb-cast/</link>
+      <pubDate>Sun, 17 May 2020 07:38:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/mysql-mariadb-cast/</guid>
+      <description>&lt;p&gt;工作上遇到了CAST小小的坑，在此紀錄一下。&lt;/p&gt;
+&lt;p&gt;先說結論：MySQL與MariaDB對於CAST支援的型別不同。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

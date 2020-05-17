@@ -6,10 +6,20 @@
     <description>Recent content on Timo&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Fri, 03 Apr 2020 08:23:41 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 17 May 2020 07:38:56 +0900</lastBuildDate>
     
 	<atom:link href="https://timochiang.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CAST簡介、支援型別</title>
+      <link>https://timochiang.github.io/posts/mysql-mariadb-cast/</link>
+      <pubDate>Sun, 17 May 2020 07:38:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/mysql-mariadb-cast/</guid>
+      <description>&lt;p&gt;工作上遇到了CAST小小的坑，在此紀錄一下。&lt;/p&gt;
+&lt;p&gt;先說結論：MySQL與MariaDB對於CAST支援的型別不同。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>使用GitHub Actions跑Go專案的測試</title>
