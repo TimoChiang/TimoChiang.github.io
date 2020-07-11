@@ -3,17 +3,52 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://timochiang.github.io/categories/</loc>
+    <lastmod>2020-07-11T15:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/tags/java/</loc>
+    <lastmod>2020-07-11T15:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/posts/learn-java/02-basic-java-syntax/</loc>
+    <lastmod>2020-07-11T15:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/categories/learn-java/</loc>
+    <lastmod>2020-07-11T15:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/posts/</loc>
+    <lastmod>2020-07-11T15:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/tags/</loc>
+    <lastmod>2020-07-11T15:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/</loc>
+    <lastmod>2020-07-11T15:38:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://timochiang.github.io/posts/learn-java/01-start-to-learn-java/</loc>
+    <lastmod>2020-07-11T14:12:31+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://timochiang.github.io/tags/cast/</loc>
     <lastmod>2020-05-17T07:38:56+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://timochiang.github.io/posts/mysql-mariadb-cast/</loc>
-    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://timochiang.github.io/categories/</loc>
     <lastmod>2020-05-17T07:38:56+09:00</lastmod>
   </url>
   
@@ -29,21 +64,6 @@
   
   <url>
     <loc>https://timochiang.github.io/tags/mysql/</loc>
-    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://timochiang.github.io/posts/</loc>
-    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://timochiang.github.io/tags/</loc>
-    <lastmod>2020-05-17T07:38:56+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://timochiang.github.io/</loc>
     <lastmod>2020-05-17T07:38:56+09:00</lastmod>
   </url>
   

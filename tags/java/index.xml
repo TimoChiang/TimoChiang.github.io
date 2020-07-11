@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Timo&#39;s Note Blog</title>
-    <link>https://timochiang.github.io/</link>
-    <description>Recent content on Timo&#39;s Note Blog</description>
+    <title>Java on Timo&#39;s Note Blog</title>
+    <link>https://timochiang.github.io/tags/java/</link>
+    <description>Recent content in Java on Timo&#39;s Note Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <lastBuildDate>Sat, 11 Jul 2020 15:38:56 +0900</lastBuildDate>
     
-	<atom:link href="https://timochiang.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://timochiang.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -33,37 +33,6 @@
  出社會後當了幾年的PHP web developer 工作上偶然碰到Golang，因為有興趣而自學了幾個月，若有時間跟機會還會想繼續精進  為何要學Java
  工作好找 大規模的服務滿多用到Java的 因為歷史久，語言相對成熟，且網路資源也多 有不少預設的資料結構可以使用，對於非本科的我來說可以對這一部分更熟悉  半年學習目標
  Java語法與資料結構熟練→用Java刷題可以得心應手 Spring Boot 框架熟練→做出Web、RESTAPI的作品 想到再加上  </description>
-    </item>
-    
-    <item>
-      <title>CAST簡介、支援型別</title>
-      <link>https://timochiang.github.io/posts/mysql-mariadb-cast/</link>
-      <pubDate>Sun, 17 May 2020 07:38:56 +0900</pubDate>
-      
-      <guid>https://timochiang.github.io/posts/mysql-mariadb-cast/</guid>
-      <description>&lt;p&gt;工作上遇到了CAST小小的坑，在此紀錄一下。&lt;/p&gt;
-&lt;p&gt;先說結論：MySQL與MariaDB對於CAST支援的型別不同。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>使用GitHub Actions跑Go專案的測試</title>
-      <link>https://timochiang.github.io/posts/github-actions-golang/</link>
-      <pubDate>Fri, 03 Apr 2020 08:23:41 +0900</pubDate>
-      
-      <guid>https://timochiang.github.io/posts/github-actions-golang/</guid>
-      <description>&lt;p&gt;GitHub Actions是一個把持續整合(Continuous integration)結合到GitHub上的服務。&lt;/p&gt;
-&lt;p&gt;比如說要執行測試或是deploy都可以在GitHub Actions上設定好，只要觸發條件便會自動化執行。&lt;/p&gt;
-&lt;p&gt;可以自訂腳本，也可以套用別人寫好的腳本，十分方便。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>使用GitHub Pages &#43; Hugo搭建靜態網站</title>
-      <link>https://timochiang.github.io/posts/use-github-pages-and-hugo-to-build-static-site/</link>
-      <pubDate>Sun, 29 Mar 2020 18:31:35 +0900</pubDate>
-      
-      <guid>https://timochiang.github.io/posts/use-github-pages-and-hugo-to-build-static-site/</guid>
-      <description>&lt;p&gt;最近下定決心要開始寫技術文章，除了記錄下來自己的學習過程，也希望可以幫助到其他需要的人。&lt;/p&gt;
-&lt;p&gt;由於之前也有嘗試寫過但因為懶惰而中斷。期望這次可以好好持續下去！&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Timo&#39;s Blog</title>
+    <title>Posts on Timo&#39;s Note Blog</title>
     <link>https://timochiang.github.io/posts/</link>
-    <description>Recent content in Posts on Timo&#39;s Blog</description>
+    <description>Recent content in Posts on Timo&#39;s Note Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sun, 17 May 2020 07:38:56 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 11 Jul 2020 15:38:56 +0900</lastBuildDate>
     
 	<atom:link href="https://timochiang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Java學習筆記02-Java基本語法</title>
+      <link>https://timochiang.github.io/posts/learn-java/02-basic-java-syntax/</link>
+      <pubDate>Sat, 11 Jul 2020 15:38:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/learn-java/02-basic-java-syntax/</guid>
+      <description>一開始學習語言，當然要先認識Java基本語法。
+推薦使用一些免費的Java基本教學課程，無論是程式語言新手還是已經其他程式語言經驗的人都很適合。
+ codecademy的Learn Java：有網頁版的編輯器與Terminal，可以邊學邊實作 educative的Learn Java from Scratch：感覺講得比codecademy的Learn Java再詳細一點 paizaラーニング：Java入門編：日文，比較活潑一點的學習方式  就看課程內容跟學習方式哪個中意就選哪個。
+我選了codecademy，每天一小時左右，大概花了一禮拜學習完基本的課程。</description>
+    </item>
+    
+    <item>
+      <title>Java學習筆記01-開始學Java</title>
+      <link>https://timochiang.github.io/posts/learn-java/01-start-to-learn-java/</link>
+      <pubDate>Sat, 11 Jul 2020 14:12:31 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/learn-java/01-start-to-learn-java/</guid>
+      <description>之前做了什麼：
+ 出社會後當了幾年的PHP web developer 工作上偶然碰到Golang，因為有興趣而自學了幾個月，若有時間跟機會還會想繼續精進  為何要學Java
+ 工作好找 大規模的服務滿多用到Java的 因為歷史久，語言相對成熟，且網路資源也多 有不少預設的資料結構可以使用，對於非本科的我來說可以對這一部分更熟悉  半年學習目標
+ Java語法與資料結構熟練→用Java刷題可以得心應手 Spring Boot 框架熟練→做出Web、RESTAPI的作品 想到再加上  </description>
+    </item>
     
     <item>
       <title>CAST簡介、支援型別</title>
