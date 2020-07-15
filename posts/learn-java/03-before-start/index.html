@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Java學習筆記03-開發前的準備 // Timo&#39;s Note Blog</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="author" content="Timo Chiang">
+    <meta name="description" content="Timo&#39;s tech note">
+    
+
+        <meta property="og:title" content="Java學習筆記03-開發前的準備" />
+    <meta property="og:description" content="Timo&#39;s tech note" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:url" content="https://timochiang.github.io/posts/learn-java/03-before-start/" />
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="https://timochiang.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://timochiang.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://timochiang.github.io/css/style.css">
+    
+
+    <meta name="generator" content="Hugo 0.68.3" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://timochiang.github.io/">Timo&#39;s Note Blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">Java學習筆記03-開發前的準備</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/posts/learn-java/03-before-start/" class="article-date">
+                <time datetime='2020-07-16T00:52:56.000&#43;09:00' itemprop="datePublished">2020-07-16</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="https://timochiang.github.io/categories/learn-java">Learn-Java</a>
+                    
+                </div>
+            </div>
+            
+            
+            <div class="article-comment-link-wrap">
+                <a href="/posts/learn-java/03-before-start/#disqus_thread" class="article-comment-link">Comments</a>
+            </div>
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>紀錄一下開發前要準備的東西。</p>
+<ul>
+<li><a href="#sdkman">SDKMAN：SDK 版本管理工具、用這個來裝Java</a></li>
+<li><a href="#intellij-idea">IDE：IntelliJ IDEA，習慣了他們家的IDE所以繼續用</a></li>
+<li><a href="#spring-initializr">Spring initializr：用這個來產生Spring boot 的framework</a></li>
+</ul>
+<h2 id="sdkman">SDKMAN</h2>
+<p>照著SDKMAN官方提供的<a href="https://sdkman.io/install">安裝方法</a>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl -s <span style="color:#e6db74">&#34;https://get.sdkman.io&#34;</span> | bash
+$ source <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.sdkman/bin/sdkman-init.sh&#34;</span>
+$ sdk version
+</code></pre></div><p>為何用source？→參考<a href="http://linux.vbird.org/linux_basic/0340bashshell-scripts.php">鳥哥的 Linux 私房菜</a></p>
+<h3 id="列出可安裝的java版本">列出可安裝的java版本</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sdk list java
+<span style="color:#f92672">================================================================================</span>
+Available Java Versions
+<span style="color:#f92672">================================================================================</span>
+ Vendor        | Use | Version      | Dist    | Status     | Identifier
+--------------------------------------------------------------------------------
+ AdoptOpenJDK  |     | 14.0.1.j9    | adpt    |            | 14.0.1.j9-adpt
+               |     | 14.0.1.hs    | adpt    |            | 14.0.1.hs-adpt
+               |     | 13.0.2.j9    | adpt    |            | 13.0.2.j9-adpt
+               |     | 13.0.2.hs    | adpt    |            | 13.0.2.hs-adpt
+               |     | 12.0.2.j9    | adpt    |            | 12.0.2.j9-adpt
+               |     | 12.0.2.hs    | adpt    |            | 12.0.2.hs-adpt
+               |     | 11.0.7.j9    | adpt    |            | 11.0.7.j9-adpt
+               | &gt;&gt;&gt; | 11.0.7.hs    | adpt    | installed  | 11.0.7.hs-adpt
+               |     | 8.0.252.j9   | adpt    |            | 8.0.252.j9-adpt
+               |     | 8.0.252.hs   | adpt    |            | 8.0.252.hs-adpt
+ Amazon        |     | 11.0.7       | amzn    |            | 11.0.7-amzn
+               |     | 8.0.252      | amzn    |            | 8.0.252-amzn
+               |     | 8.0.202      | amzn    |            | 8.0.202-amzn
+.....                       
+
+
+</code></pre></div><p>參考網路上的教學選了AdoptOpenJDK。</p>
+<h5 id="qvendor的差異">Q：Vendor的差異？</h5>
+<h3 id="安裝版本確認設定預設版本">安裝、版本確認、設定預設版本</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">// 安裝
+$ sdk install java 11.0.7.hs-adpt
+// 版本確認
+$ java -version
+openjdk version <span style="color:#e6db74">&#34;11.0.7&#34;</span> 2020-04-14
+OpenJDK Runtime Environment AdoptOpenJDK <span style="color:#f92672">(</span>build 11.0.7+10<span style="color:#f92672">)</span>
+OpenJDK 64-Bit Server VM AdoptOpenJDK <span style="color:#f92672">(</span>build 11.0.7+10, mixed mode<span style="color:#f92672">)</span>
+// 設定預設版本
+$ sdk default java 11.0.7.hs-adpt
+</code></pre></div><h2 id="intellij-idea">IntelliJ IDEA</h2>
+<p>官方下載：https://www.jetbrains.com/idea/</p>
+<p>IntelliJ IDEA有分Ultimate與Community兩個版本，我使用的是Ultimate版本。</p>
+<h2 id="spring-initializr">Spring initializr</h2>
+<p>在<a href="https://start.spring.io/">Spring initializr</a>上點選想要的Spring boot版本與框架的各種設定。</p>
+<p>Project：分為Maven和Gradle，Maven使用XML來設定，Gradle就比較直觀一點。不知道選什麼的話就先選Gradle吧！</p>
+<p>Language：因為要用Java開發，所以選Java</p>
+<p>Spring Boot：有括弧的(像是SNAPSHOT、M1等)是不安定版。一般情況選擇沒有括弧的安定版。</p>
+<p>Project Metadata：</p>
+<ul>
+<li>Group：假設你要開發一個網站abc.com，這裡就填com.abc</li>
+<li>Artifact：在abc.com下本次要開發的工具或app，就填在這（例如要開發登入的套件就可以填login）</li>
+<li>Name：自動填入（Artifact）</li>
+<li>Description：任意</li>
+<li>Package name：自動填入（{Group}.{Artifact}）</li>
+<li>Packaging：Jar</li>
+<li>Java：選擇安裝的Java版本</li>
+</ul>
+<p>另外Group+Artifact會是到時候開發時的package路徑。</p>
+<p>Dependencies：已經知道的依賴package可以從這裡選，不選的話也可以之後自行加上去</p>
+<p>通常會裝：</p>
+<p>Spring Web：Controller GET method Web必裝</p>
+<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-devtools">Spring Boot DevTools</a>：自動重啟，IDE開發加速用</p>
+<p>MySQL Driver：連Mysql用的驅動，要連其他類型的資料庫可以打關鍵字找</p>
+<p>Spring Data JPA：Entity、Reposertoy、Service的套件</p>
+<p>另外：</p>
+<p><a href="https://www.thymeleaf.org/">Thymeleaf</a>：要回傳HTML內容的時候的template套件，也有其他可以選擇不過目前只用過這個</p>
+<p>好了之後就按GENERATE，就會把zip檔案下載下來。解壓縮後直接用IntelliJ IDEA打開，IDE裝完環境後就可以開始開發了！</p>
+<p>另外在IntelliJ IDEA裡也可以直接使用Spring initializr來開啟新專案，填的內容就跟網頁上一樣。</p>
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sdkman">SDKMAN</a>
+      <ul>
+        <li><a href="#列出可安裝的java版本">列出可安裝的java版本</a></li>
+        <li><a href="#安裝版本確認設定預設版本">安裝、版本確認、設定預設版本</a></li>
+      </ul>
+    </li>
+    <li><a href="#intellij-idea">IntelliJ IDEA</a></li>
+    <li><a href="#spring-initializr">Spring initializr</a></li>
+  </ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/java">Java
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/sdkman">SDKMAN
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/intellij-idea">IntelliJ IDEA
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/spring-initializr">Spring initializr
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    
+    <a href="/posts/learn-java/02-basic-java-syntax/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Java學習筆記02-Java基本語法&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+
+</article>
+
+        
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "timoblog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2020 Timo&#39;s Note Blog
+            <br />
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos" target="_blank">Minos</a>
+        </div>
+    </div>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-162845066-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+</div>
+</body>
+</html>

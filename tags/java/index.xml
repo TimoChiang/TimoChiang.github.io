@@ -6,10 +6,19 @@
     <description>Recent content in Java on Timo&#39;s Note Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sat, 11 Jul 2020 15:38:56 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 16 Jul 2020 00:52:56 +0900</lastBuildDate>
     
 	<atom:link href="https://timochiang.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Java學習筆記03-開發前的準備</title>
+      <link>https://timochiang.github.io/posts/learn-java/03-before-start/</link>
+      <pubDate>Thu, 16 Jul 2020 00:52:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/learn-java/03-before-start/</guid>
+      <description>&lt;p&gt;紀錄一下開發前要準備的東西。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Java學習筆記02-Java基本語法</title>

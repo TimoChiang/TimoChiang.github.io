@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spring initializr on Timo&#39;s Note Blog</title>
+    <link>https://timochiang.github.io/tags/spring-initializr/</link>
+    <description>Recent content in Spring initializr on Timo&#39;s Note Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Thu, 16 Jul 2020 00:52:56 +0900</lastBuildDate>
+    
+	<atom:link href="https://timochiang.github.io/tags/spring-initializr/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Java學習筆記03-開發前的準備</title>
+      <link>https://timochiang.github.io/posts/learn-java/03-before-start/</link>
+      <pubDate>Thu, 16 Jul 2020 00:52:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/learn-java/03-before-start/</guid>
+      <description>&lt;p&gt;紀錄一下開發前要準備的東西。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

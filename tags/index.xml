@@ -6,17 +6,44 @@
     <description>Recent content in Tags on Timo&#39;s Note Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sat, 11 Jul 2020 15:38:56 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 16 Jul 2020 00:52:56 +0900</lastBuildDate>
     
 	<atom:link href="https://timochiang.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>IntelliJ IDEA</title>
+      <link>https://timochiang.github.io/tags/intellij-idea/</link>
+      <pubDate>Thu, 16 Jul 2020 00:52:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/tags/intellij-idea/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Java</title>
       <link>https://timochiang.github.io/tags/java/</link>
-      <pubDate>Sat, 11 Jul 2020 15:38:56 +0900</pubDate>
+      <pubDate>Thu, 16 Jul 2020 00:52:56 +0900</pubDate>
       
       <guid>https://timochiang.github.io/tags/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SDKMAN</title>
+      <link>https://timochiang.github.io/tags/sdkman/</link>
+      <pubDate>Thu, 16 Jul 2020 00:52:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/tags/sdkman/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Spring initializr</title>
+      <link>https://timochiang.github.io/tags/spring-initializr/</link>
+      <pubDate>Thu, 16 Jul 2020 00:52:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/tags/spring-initializr/</guid>
       <description></description>
     </item>
     
