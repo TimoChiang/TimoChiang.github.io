@@ -88,6 +88,13 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl -s <span style="color:#e6db74">&#34;https://get.sdkman.io&#34;</span> | bash
 $ source <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.sdkman/bin/sdkman-init.sh&#34;</span>
 $ sdk version
+<span style="color:#f92672">====</span> BROADCAST <span style="color:#f92672">=================================================================</span>
+* 2020-07-15: Grails 4.0.4 released on SDKMAN! <span style="color:#75715e">#grailsfw</span>
+* 2020-07-13: Leiningen 2.9.4 released on SDKMAN! <span style="color:#75715e">#leiningen</span>
+* 2020-07-13: Gradle 6.6-rc-1 released on SDKMAN! <span style="color:#75715e">#gradle</span>
+<span style="color:#f92672">================================================================================</span>
+
+SDKMAN 5.8.5+522
 </code></pre></div><p>為何用source？→參考<a href="http://linux.vbird.org/linux_basic/0340bashshell-scripts.php">鳥哥的 Linux 私房菜</a></p>
 <h3 id="列出可安裝的java版本">列出可安裝的java版本</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sdk list java
@@ -103,7 +110,7 @@ Available Java Versions
                |     | 12.0.2.j9    | adpt    |            | 12.0.2.j9-adpt
                |     | 12.0.2.hs    | adpt    |            | 12.0.2.hs-adpt
                |     | 11.0.7.j9    | adpt    |            | 11.0.7.j9-adpt
-               | &gt;&gt;&gt; | 11.0.7.hs    | adpt    | installed  | 11.0.7.hs-adpt
+               |     | 11.0.7.hs    | adpt    |            | 11.0.7.hs-adpt
                |     | 8.0.252.j9   | adpt    |            | 8.0.252.j9-adpt
                |     | 8.0.252.hs   | adpt    |            | 8.0.252.hs-adpt
  Amazon        |     | 11.0.7       | amzn    |            | 11.0.7-amzn
@@ -117,17 +124,47 @@ Available Java Versions
 <h3 id="安裝版本確認設定預設版本">安裝、版本確認、設定預設版本</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">// 安裝
 $ sdk install java 11.0.7.hs-adpt
+
+Downloading: java 11.0.7.hs-adpt
+
+In progress...
+
+<span style="color:#75715e">############################################################################################################################################################################## 100.0%############################################################################################################################################################################## 100.0%</span>
+
+Repackaging Java 11.0.7.hs-adpt...
+
+Done repackaging...
+Cleaning up residual files...
+
+Installing: java 11.0.7.hs-adpt
+Done installing!
+
+
+Setting java 11.0.7.hs-adpt as default.
 // 版本確認
 $ java -version
 openjdk version <span style="color:#e6db74">&#34;11.0.7&#34;</span> 2020-04-14
 OpenJDK Runtime Environment AdoptOpenJDK <span style="color:#f92672">(</span>build 11.0.7+10<span style="color:#f92672">)</span>
 OpenJDK 64-Bit Server VM AdoptOpenJDK <span style="color:#f92672">(</span>build 11.0.7+10, mixed mode<span style="color:#f92672">)</span>
+
 // 設定預設版本
 $ sdk default java 11.0.7.hs-adpt
 </code></pre></div><h2 id="intellij-idea">IntelliJ IDEA</h2>
 <p>官方下載：https://www.jetbrains.com/idea/</p>
 <p>IntelliJ IDEA有分Ultimate與Community兩個版本，我使用的是Ultimate版本。</p>
+<h3 id="sdk設定">SDK設定</h3>
+<p>安裝完後，需要讓IntelliJ IDEA知道要用哪個Java版本。</p>
+<p>初次啟動，來到下面的歡迎畫面後，<code>Configure</code>→<code>Structure for New Projects</code>。</p>
+<p><img src="/images/learn-java-03-01.png" alt="learn-java-03-01"></p>
+<p>點下去後會開啟下圖的視窗，點選左側<code>Platform Settings</code>的<code>SDKs</code>，然後按一下上面的<code>＋</code>→<code>Add JDK...</code>。</p>
+<p><img src="/images/learn-java-03-02.png" alt="learn-java-03-02"></p>
+<p>按下後跳出視窗，要選擇剛剛裝好的Java資料夾，比較快的方式是按下<code>command+shjift+g</code>後直接輸入位置<code>~/.sdkman/candidates/java/current</code>，會自動跳到預設的Java資料夾，確定沒問題後點選Open。</p>
+<p><img src="/images/learn-java-03-03.png" alt="learn-java-03-03"></p>
+<p>成功讀取後會像下圖這樣子。沒問題就按OK。</p>
+<p><img src="/images/learn-java-03-04.png" alt="learn-java-03-04"></p>
+<p>設定到這基本的就完成了，之後再補一些方便開發的設定。</p>
 <h2 id="spring-initializr">Spring initializr</h2>
+<h3 id="方法ㄧ從網頁上選擇後下載並用ide打開">方法ㄧ：從網頁上選擇後下載並用IDE打開</h3>
 <p>在<a href="https://start.spring.io/">Spring initializr</a>上點選想要的Spring boot版本與框架的各種設定。</p>
 <p>Project：分為Maven和Gradle，Maven使用XML來設定，Gradle就比較直觀一點。不知道選什麼的話就先選Gradle吧！</p>
 <p>Language：因為要用Java開發，所以選Java</p>
@@ -152,7 +189,11 @@ $ sdk default java 11.0.7.hs-adpt
 <p>另外：</p>
 <p><a href="https://www.thymeleaf.org/">Thymeleaf</a>：要回傳HTML內容的時候的template套件，也有其他可以選擇不過目前只用過這個</p>
 <p>好了之後就按GENERATE，就會把zip檔案下載下來。解壓縮後直接用IntelliJ IDEA打開，IDE裝完環境後就可以開始開發了！</p>
+<h3 id="方法二直接用intellij-idea作成project">方法二：直接用IntelliJ IDEA作成Project</h3>
 <p>另外在IntelliJ IDEA裡也可以直接使用Spring initializr來開啟新專案，填的內容就跟網頁上一樣。</p>
+<p>點選<code>Create New Project</code>→左側的<code>Spring initializr</code>→確認JavaSDK後Next</p>
+<p>之後就跟在Spring initializr網頁上操作類似：</p>
+<p><img src="/images/learn-java-03-05.png" alt="learn-java-03-05"></p>
         </div>
 
         
@@ -167,8 +208,17 @@ $ sdk default java 11.0.7.hs-adpt
         <li><a href="#安裝版本確認設定預設版本">安裝、版本確認、設定預設版本</a></li>
       </ul>
     </li>
-    <li><a href="#intellij-idea">IntelliJ IDEA</a></li>
-    <li><a href="#spring-initializr">Spring initializr</a></li>
+    <li><a href="#intellij-idea">IntelliJ IDEA</a>
+      <ul>
+        <li><a href="#sdk設定">SDK設定</a></li>
+      </ul>
+    </li>
+    <li><a href="#spring-initializr">Spring initializr</a>
+      <ul>
+        <li><a href="#方法ㄧ從網頁上選擇後下載並用ide打開">方法ㄧ：從網頁上選擇後下載並用IDE打開</a></li>
+        <li><a href="#方法二直接用intellij-idea作成project">方法二：直接用IntelliJ IDEA作成Project</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
         </div>

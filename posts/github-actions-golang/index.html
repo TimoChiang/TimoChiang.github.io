@@ -90,7 +90,7 @@
 </ul>
 <h2 id="github-actions基本使用方式">GitHub Actions基本使用方式</h2>
 <p>首先到想要添加GitHub Actions的repository主頁面點選Actions標籤：</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/github-actions-1.png" alt="github-actions-1"></p>
 <p>由於我的專案使用Go，系統推薦了Go的簡單Action。直接點選Set up this workflow來試試看。</p>
 <p>套用已經寫好的Action，實際上就是在repository裡面新增一個其他人寫好的的yml腳本，並放置在<code>.github/workflows/</code>路徑下。GitHub會自動抓取該路徑下的腳本並在指定條件下執行。</p>
 <p>直接先Commit來測試看看！這裡可以選擇在原分支commit或建立新的分支與Pull request。為了不影響master，這次選擇新建分支。</p>
