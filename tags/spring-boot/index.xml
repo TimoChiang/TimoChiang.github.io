@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spring Boot on Timo&#39;s Note Blog</title>
+    <link>https://timochiang.github.io/tags/spring-boot/</link>
+    <description>Recent content in Spring Boot on Timo&#39;s Note Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sat, 18 Jul 2020 23:21:56 +0900</lastBuildDate>
+    
+	<atom:link href="https://timochiang.github.io/tags/spring-boot/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Java學習筆記04-Spring Boot跑起來</title>
+      <link>https://timochiang.github.io/posts/learn-java/04-run-spring-boot/</link>
+      <pubDate>Sat, 18 Jul 2020 23:21:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/learn-java/04-run-spring-boot/</guid>
+      <description>&lt;p&gt;Spring Boot的環境準備好之後，接著就可以開始開發了。&lt;/p&gt;
+&lt;p&gt;首先來看如何啟動。總是要看一下會不會動再開始寫程式碼啊！&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

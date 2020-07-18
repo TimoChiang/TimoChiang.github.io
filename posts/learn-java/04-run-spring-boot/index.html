@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Java學習筆記04-Spring Boot跑起來 // Timo&#39;s Note Blog</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="author" content="Timo Chiang">
+    <meta name="description" content="Timo&#39;s tech note">
+    
+
+        <meta property="og:title" content="Java學習筆記04-Spring Boot跑起來" />
+    <meta property="og:description" content="Timo&#39;s tech note" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:url" content="https://timochiang.github.io/posts/learn-java/04-run-spring-boot/" />
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="https://timochiang.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://timochiang.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://timochiang.github.io/css/style.css">
+    
+
+    <meta name="generator" content="Hugo 0.68.3" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://timochiang.github.io/">Timo&#39;s Note Blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">Java學習筆記04-Spring Boot跑起來</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/posts/learn-java/04-run-spring-boot/" class="article-date">
+                <time datetime='2020-07-18T23:21:56.000&#43;09:00' itemprop="datePublished">2020-07-18</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="https://timochiang.github.io/categories/learn-java">Learn-Java</a>
+                    
+                </div>
+            </div>
+            
+            
+            <div class="article-comment-link-wrap">
+                <a href="/posts/learn-java/04-run-spring-boot/#disqus_thread" class="article-comment-link">Comments</a>
+            </div>
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>Spring Boot的環境準備好之後，接著就可以開始開發了。</p>
+<p>首先來看如何啟動。總是要看一下會不會動再開始寫程式碼啊！</p>
+<h2 id="run">Run!</h2>
+<p>由於已經配置好要啟動Java的環境，可以直接在Run起來看看。</p>
+<p>用Terminal下指令的話：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./gradlew bootRun
+</code></pre></div><p>或是在IntelliJ IDEA按右上角的Run。</p>
+<p>成功的話會最後出現的訊息會停在大概以下這裡：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">2020-07-18 23:57:38.840  INFO <span style="color:#ae81ff">9690</span> --- <span style="color:#f92672">[</span>  restartedMain<span style="color:#f92672">]</span> o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>: <span style="color:#ae81ff">8080</span> <span style="color:#f92672">(</span>http<span style="color:#f92672">)</span> with context path <span style="color:#e6db74">&#39;&#39;</span>
+2020-07-18 23:57:38.853  INFO <span style="color:#ae81ff">9690</span> --- <span style="color:#f92672">[</span>  restartedMain<span style="color:#f92672">]</span> c.timochiang.kitchen.KitchenApplication  : Started KitchenApplication in 1.975 seconds <span style="color:#f92672">(</span>JVM running <span style="color:#66d9ef">for</span> 2.487<span style="color:#f92672">)</span>
+</code></pre></div><h2 id="跑不起來的狀況">跑不起來的狀況</h2>
+<p>不過，假設沒有成功的話，依照下面的訊息來對應（遇到就更新）：</p>
+<h3 id="port被佔用">Port被佔用</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Web server failed to start. Port <span style="color:#ae81ff">8080</span> was already in use.
+
+Action:
+
+Identify and stop the process that<span style="color:#960050;background-color:#1e0010">&#39;</span>s listening on port <span style="color:#ae81ff">8080</span> or configure this application to listen on another port.
+</code></pre></div><p>(Tomcat)預設的port是8080，如果要修改的話要到<code>src/main/resources/application.properties</code>裡面添加：</p>
+<pre><code class="language-properties" data-lang="properties">server.port=8090
+</code></pre><h3 id="database連線沒設定好">Database連線沒設定好</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Failed to configure a DataSource: <span style="color:#e6db74">&#39;url&#39;</span> attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+</code></pre></div><p>代表你有用了database driver的Dependencies但是你沒有設定好連線，才會報錯。</p>
+<p>這時候要去<code>src/main/resources/application.properties</code>設定。</p>
+<p>以MySQL Driver為例的話，在<code>application.properties</code>內添加：</p>
+<pre><code class="language-properties" data-lang="properties">spring.datasource.url=jdbc:mysql://${MYSQL_HOST:localhost}:3306/your_database_name
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+</code></pre><h2 id="跑起來之後">跑起來之後</h2>
+<p>port預設是8080，這時候我們可以去localhost:8080看看。出現下面的畫面就表示成功啦。</p>
+<p><img src="/images/learn-java-04-01.png" alt="learn-java-04-01"></p>
+<p>當然因為還沒有開始寫任何內容，所以會給你個404頁面。</p>
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#run">Run!</a></li>
+    <li><a href="#跑不起來的狀況">跑不起來的狀況</a>
+      <ul>
+        <li><a href="#port被佔用">Port被佔用</a></li>
+        <li><a href="#database連線沒設定好">Database連線沒設定好</a></li>
+      </ul>
+    </li>
+    <li><a href="#跑起來之後">跑起來之後</a></li>
+  </ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/java">Java
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/spring-boot">Spring Boot
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    
+    <a href="/posts/learn-java/03-before-start/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Java學習筆記03-開發前的準備&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+
+</article>
+
+        
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "timoblog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2020 Timo&#39;s Note Blog
+            <br />
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos" target="_blank">Minos</a>
+        </div>
+    </div>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-162845066-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+</div>
+</body>
+</html>
