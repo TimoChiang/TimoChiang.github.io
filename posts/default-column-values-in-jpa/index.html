@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>如何讓留空欄位的表單提交後自動帶入JPA欄位的預設值 // Timo&#39;s Note Blog</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="author" content="Timo Chiang">
+    <meta name="description" content="Timo&#39;s tech note">
+    
+
+        <meta property="og:title" content="如何讓留空欄位的表單提交後自動帶入JPA欄位的預設值" />
+    <meta property="og:description" content="Timo&#39;s tech note" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:url" content="https://timochiang.github.io/posts/default-column-values-in-jpa/" />
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="https://timochiang.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://timochiang.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://timochiang.github.io/css/style.css">
+    
+
+    <meta name="generator" content="Hugo 0.68.3" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://timochiang.github.io/">Timo&#39;s Note Blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">如何讓留空欄位的表單提交後自動帶入JPA欄位的預設值</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/posts/default-column-values-in-jpa/" class="article-date">
+                <time datetime='2020-07-25T12:00:56.000&#43;09:00' itemprop="datePublished">2020-07-25</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="https://timochiang.github.io/categories/java">Java</a>
+                    
+                </div>
+            </div>
+            
+            
+            <div class="article-comment-link-wrap">
+                <a href="/posts/default-column-values-in-jpa/#disqus_thread" class="article-comment-link">Comments</a>
+            </div>
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>使用Spring Boot開發Web application的時候，可以使用<a href="https://spring.io/projects/spring-data-jpa">Spring Data JPA</a>來與資料庫互動。</p>
+<p>如果遇到需要設定欄位的預設值的狀況要如何處理呢？</p>
+<hr>
+<h2 id="準備基本環境">準備基本環境</h2>
+<p>假設有一個新增商品的頁面。有名稱、價格與成本等欄位可以填。</p>
+<p>先實作出基本環境，建立好與資料庫互動的三個要素：Entity、Repository、Service：</p>
+<h5 id="productjava">Product.java：</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.timo.demo<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> javax.persistence.*<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@Entity</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Product</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Id</span>
+    <span style="color:#a6e22e">@GeneratedValue</span><span style="color:#f92672">(</span>strategy <span style="color:#f92672">=</span> GenerationType<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">private</span> Integer id<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+
+    <span style="color:#a6e22e">@Column</span><span style="color:#f92672">(</span>nullable <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> columnDefinition <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;DOUBLE(8,2) UNSIGNED&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">private</span> Double price<span style="color:#f92672">;</span>
+
+    <span style="color:#a6e22e">@Column</span><span style="color:#f92672">(</span>nullable <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> columnDefinition <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;DOUBLE(8,2) UNSIGNED&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">private</span> Double cost<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> Integer <span style="color:#a6e22e">getId</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> id<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span>Integer id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> Double <span style="color:#a6e22e">getPrice</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> price<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setPrice</span><span style="color:#f92672">(</span>Double price<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">price</span> <span style="color:#f92672">=</span> price<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> Double <span style="color:#a6e22e">getCost</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> cost<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setCost</span><span style="color:#f92672">(</span>Double cost<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cost</span> <span style="color:#f92672">=</span> cost<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h5 id="productrepositoryjava">ProductRepository.java：</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.timo.demo<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> org.springframework.data.repository.CrudRepository<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ProductRepository</span> <span style="color:#66d9ef">extends</span> CrudRepository<span style="color:#f92672">&lt;</span>Product<span style="color:#f92672">,</span> Integer<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h5 id="productservicejava">ProductService.java：</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.timo.demo<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> org.springframework.beans.factory.annotation.Autowired<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.stereotype.Service<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@Service</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProductService</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Autowired</span>
+    <span style="color:#66d9ef">private</span> ProductRepository productRepository<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> Product <span style="color:#a6e22e">save</span><span style="color:#f92672">(</span>Product product<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> productRepository<span style="color:#f92672">.</span><span style="color:#a6e22e">save</span><span style="color:#f92672">(</span>product<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>接著是在Controller加入新增頁面：</p>
+<h5 id="productcontrollerjava">ProductController.java：</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.timo.demo<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> org.springframework.beans.factory.annotation.Autowired<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.stereotype.Controller<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.ui.Model<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.web.bind.annotation.GetMapping<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.web.bind.annotation.PostMapping<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@Controller</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProductController</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Autowired</span>
+    <span style="color:#66d9ef">private</span> ProductService productService<span style="color:#f92672">;</span>
+
+    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/product/create&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>Model model<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;create&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@PostMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/product/create&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>Product product<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        productService<span style="color:#f92672">.</span><span style="color:#a6e22e">save</span><span style="color:#f92672">(</span>product<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:/product/create&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>以及新增頁面的HTML：</p>
+<h5 id="createhtml">create.html：</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+    &lt;<span style="color:#f92672">title</span>&gt;Title&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/product/create&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
+    商品名稱&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;name&#34;</span>&gt;&lt;<span style="color:#f92672">br</span>/&gt;
+    商品價格&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;number&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;price&#34;</span>&gt;&lt;<span style="color:#f92672">br</span>/&gt;
+    商品成本&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;number&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cost&#34;</span>&gt;&lt;<span style="color:#f92672">br</span>/&gt;
+    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;新增&#34;</span>&gt;
+&lt;/<span style="color:#f92672">form</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>這樣就準備好簡單的Form表單：</p>
+<p><img src="/images/default-column-values-in-jpa-1.png" alt="default-column-values-in-jpa-1"></p>
+<p>當在表單上每個欄位都有填的時候可以正常新增資料。</p>
+<p>假設希望成本不為null，可以是選填，並且沒有輸入值的情況可以自動帶入預設值的話要如何處理呢？</p>
+<h2 id="設定欄位的預設值">設定欄位的預設值</h2>
+<p>由於原本欄位就有設定<code>nullable = false</code>，所以直接不填成本提交的話會得到500 ERROR：</p>
+<pre><code>not-null property references a null or transient value : com.timo.demo.Product.cost;
+nested exception is org.hibernate.PropertyValueException: 
+not-null property references a null or transient value : com.timo.demo.Product.cost
+</code></pre><p>要設定預設值，得在Entity的欄位部分設定：</p>
+<h5 id="productjava-1">Product.java：</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Column</span><span style="color:#f92672">(</span>nullable <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> columnDefinition <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;DOUBLE(8,2) UNSIGNED&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@ColumnDefault</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1.00&#34;</span><span style="color:#f92672">)</span> <span style="color:#75715e">// for database
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> Double cost <span style="color:#f92672">=</span> 1<span style="color:#f92672">.</span><span style="color:#a6e22e">00</span><span style="color:#f92672">;</span> <span style="color:#75715e">// for java code
+</span></code></pre></div><p>其中<code>@ColumnDefault(&quot;1.00&quot;)</code>是相對於database的schema，也就是如果有開啟自動寫入資料庫的情況會幫你在DB裡面設定好Default = 1.00。</p>
+<p>而在欄位後面直接賦值是相對於在Java執行時，如果new一個Product的時候會預設<code>cost=1.00</code>。</p>
+<p>加好了之後我們再試一次&hellip;.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>結果還次出現一樣的500 ERROR！！！</p>
+<p>實際new一個Product檢查時，cost是有正確的帶著預設值的。</p>
+<p>問題是出在哪裡呢&hellip;？</p>
+<h2 id="避免null更新">避免null更新</h2>
+<p>找了一陣子才發現，由於我們Form表單在提交的時候，cost的欄位是丟一個空值：</p>
+<p><img src="/images/default-column-values-in-jpa-2.png" alt="default-column-values-in-jpa-2"></p>
+<p>而在ProductController自動把值寫入Product時，會把這空值自動轉成null，賦值給Product。</p>
+<p>JPA就拿著這個Product要寫入DB時，發現cost是null，而與設定好的<code>nullable = false</code>衝突導致仍然噴500 ERROR。</p>
+<p>網路上一時找不到相關解法，於是把<code>setCost</code>裡面加上避免設定null的判斷：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setCost</span><span style="color:#f92672">(</span>Double cost<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cost <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cost</span> <span style="color:#f92672">=</span> cost<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>如此一來即便Form丟來一個空值也不會把null設定進去，成功實現不填寫內容也會帶著預設值的功能！</p>
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#準備基本環境">準備基本環境</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#設定欄位的預設值">設定欄位的預設值</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#避免null更新">避免null更新</a></li>
+  </ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/java">Java
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/spring-boot">Spring Boot
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/jpa">JPA
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/form">Form
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    
+    <a href="/posts/learn-java/05-hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Java學習筆記05-Hello World&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+
+</article>
+
+        
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "timoblog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2020 Timo&#39;s Note Blog
+            <br />
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos" target="_blank">Minos</a>
+        </div>
+    </div>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-162845066-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+</div>
+</body>
+</html>
