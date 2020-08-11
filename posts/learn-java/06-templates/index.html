@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Java學習筆記06-templates // Timo&#39;s Note Blog</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="author" content="Timo Chiang">
+    <meta name="description" content="Timo&#39;s tech note">
+    
+
+        <meta property="og:title" content="Java學習筆記06-templates" />
+    <meta property="og:description" content="Timo&#39;s tech note" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:url" content="https://timochiang.github.io/posts/learn-java/06-templates/" />
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="https://timochiang.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://timochiang.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://timochiang.github.io/css/style.css">
+    
+
+    <meta name="generator" content="Hugo 0.68.3" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://timochiang.github.io/">Timo&#39;s Note Blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">Java學習筆記06-templates</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/posts/learn-java/06-templates/" class="article-date">
+                <time datetime='2020-08-11T11:00:56.000&#43;09:00' itemprop="datePublished">2020-08-11</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="https://timochiang.github.io/categories/learn-java">Learn-Java</a>
+                    
+                </div>
+            </div>
+            
+            
+            <div class="article-comment-link-wrap">
+                <a href="/posts/learn-java/06-templates/#disqus_thread" class="article-comment-link">Comments</a>
+            </div>
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p><a href="/posts/learn-java/05-hello-world/">上一篇</a>成功設定路由並且在畫面顯示了Hello World字串。接著要用templates來呈現我們想要的HTML內容，也就是MVC的V(View)。</p>
+<p>目前只用過<a href="https://www.thymeleaf.org/">Thymeleaf</a>這個套件。其他的除了語法不同之外似乎都大同小異。</p>
+<h2 id="restcontroller與controller差異">@RestController與@Controller差異</h2>
+<p>來把上一篇的Hello Wolrd改成用templates顯示。原本長這樣：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.timo.hello<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> org.springframework.web.bind.annotation.GetMapping<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.web.bind.annotation.RestController<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@RestController</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloController</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/hello&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>在改之前要先提一下<code>@RestController</code>與<code>@Controller</code>的差異點。</p>
+<p>在顯示Hello Wolrd的時候使用了<code>@RestController</code>的annotation，根據<a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RestController.html">官方文件</a>：</p>
+<blockquote>
+<p>A convenience annotation that is itself annotated with <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Controller.html"><code>@Controller</code></a> and <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/ResponseBody.html"><code>@ResponseBody</code></a>.</p>
+</blockquote>
+<p>也就是說<code>@RestController</code> = <code>@Controller</code> + <code>@ResponseBody</code>。</p>
+<p>而<code>@ResponseBody</code>會讓Controller的方法直接回傳String。而如果格式符合的話也會自動轉換成JSON格式。</p>
+<p>那單純的<code>@Controller</code>annotation，則是讓Controller的方法去找相對應的template檔案，也就是我們想要的。</p>
+<p>於是把<code>@RestController</code>改成<code>@Controller</code>，就完成了第一步驟：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Controller</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloController</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">....</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="設定template檔案">設定template檔案</h2>
+<p>接著要新增有著HTML內容的template檔案。</p>
+<p>在Spring Boot資料夾架構中有<code>resources</code>檔案夾，裡面有<code>static</code>與<code>templates</code>：</p>
+<ul>
+<li>static：靜態檔案(js, css..)放這</li>
+<li>templates：view的東西放這</li>
+</ul>
+<p>在templates裡面新增<code>hello/index.html</code>檔案並加入一些內容。（Thymeleaf用的是html格式，如果用其他套件會有不同的副檔名）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+&lt;<span style="color:#f92672">h1</span>&gt;HELLO!!!&lt;/<span style="color:#f92672">h1</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><h2 id="controller設定要讀取的template路徑">Controller設定要讀取的template路徑</h2>
+<p>最後要在Controller設定要讀取的template。</p>
+<p>只要在retrun的部分設定路徑就可以了：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Controller</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloController</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/hello&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;hello/index&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><img src="/images/learn-java-06-01.png" alt="learn-java-06-01"></p>
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#restcontroller與controller差異">@RestController與@Controller差異</a></li>
+    <li><a href="#設定template檔案">設定template檔案</a></li>
+    <li><a href="#controller設定要讀取的template路徑">Controller設定要讀取的template路徑</a></li>
+  </ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/java">Java
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/spring-boot">Spring Boot
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/templates">templates
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/thymeleaf">Thymeleaf
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    
+    <a href="/posts/default-column-values-in-jpa/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">如何讓留空欄位的表單提交後自動帶入JPA欄位的預設值&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+
+</article>
+
+        
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "timoblog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2020 Timo&#39;s Note Blog
+            <br />
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos" target="_blank">Minos</a>
+        </div>
+    </div>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-162845066-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+</div>
+</body>
+</html>
