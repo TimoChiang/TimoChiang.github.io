@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Timo&#39;s Note Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Tue, 11 Aug 2020 11:00:56 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 22 Aug 2020 08:00:56 +0900</lastBuildDate>
     
 	<atom:link href="https://timochiang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Apache的SetEnvIf無法正確比對Request_URI的解決辦法</title>
+      <link>https://timochiang.github.io/posts/apache-setenv/</link>
+      <pubDate>Sat, 22 Aug 2020 08:00:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/apache-setenv/</guid>
+      <description>&lt;p&gt;在Apache的環境下，如果要針對不同條件做不同的設定（例如Header），可以使用SetEnvIf來個別設置變數。&lt;/p&gt;
+&lt;p&gt;而最近在接觸這個設定時遇到了一些問題，記錄一下解決方法。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Java學習筆記06-templates</title>
@@ -107,6 +117,28 @@
       <guid>https://timochiang.github.io/posts/use-github-pages-and-hugo-to-build-static-site/</guid>
       <description>&lt;p&gt;最近下定決心要開始寫技術文章，除了記錄下來自己的學習過程，也希望可以幫助到其他需要的人。&lt;/p&gt;
 &lt;p&gt;由於之前也有嘗試寫過但因為懶惰而中斷。期望這次可以好好持續下去！&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://timochiang.github.io/posts/aws-ssl-key/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/aws-ssl-key/</guid>
+      <description>acm
+pair確認
+ SSL証明書ファイルのチェックサム取得  $ openssl x509 -noout -modulus -in &amp;lt;SSL証明書ファイル&amp;gt; | openssl md5  秘密鍵ファイルのチェックサム取得  $ openssl rsa -noout -modulus -in &amp;lt;秘密鍵ファイル&amp;gt; | openssl md5  CSRファイルのチェックサム取得  $ openssl req -noout -modulus -in &amp;lt;CSRファイル&amp;gt; | openssl md5 Certificate body：crt or pem（直接拿到或從pfx檔解出來）
+openssl pkcs12 -in export_MMC.pfx -clcerts -nokeys -out client_ssl.pem Enter Import Password: お客さん提供されたパスワード MAC verified OK Certificate private key*	private key 上傳到aCM要解鎖：
+openssl rsa -in private.pem -out PrivateKeyNoPW.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://timochiang.github.io/posts/untitled/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/untitled/</guid>
+      <description>sequenceDiagram Alice -&amp;gt;&amp;gt; Bob: Hello Bob, how are you? Bob--&amp;gt;&amp;gt;John: How about you John? Bob--x Alice: I am good thanks! Bob-x John: I am good thanks! Note right of John: Bob thinks a long&amp;lt;br/&amp;gt;long time, so long&amp;lt;br/&amp;gt;that the text does&amp;lt;br/&amp;gt;not fit on a row. Bob--&amp;gt;Alice: Checking with John... Alice-&amp;gt;John: Yes... John, how are you? </description>
     </item>
     
   </channel>

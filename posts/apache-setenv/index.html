@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Apache的SetEnvIf無法正確比對Request_URI的解決辦法 // Timo&#39;s Note Blog</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="author" content="Timo Chiang">
+    <meta name="description" content="Timo&#39;s tech note">
+    
+
+        <meta property="og:title" content="Apache的SetEnvIf無法正確比對Request_URI的解決辦法" />
+    <meta property="og:description" content="Timo&#39;s tech note" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:url" content="https://timochiang.github.io/posts/apache-setenv/" />
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="https://timochiang.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://timochiang.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://timochiang.github.io/css/style.css">
+    
+
+    <meta name="generator" content="Hugo 0.68.3" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://timochiang.github.io/">Timo&#39;s Note Blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">Apache的SetEnvIf無法正確比對Request_URI的解決辦法</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/posts/apache-setenv/" class="article-date">
+                <time datetime='2020-08-22T08:00:56.000&#43;09:00' itemprop="datePublished">2020-08-22</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="https://timochiang.github.io/categories/server">Server</a>
+                    
+                </div>
+            </div>
+            
+            
+            <div class="article-comment-link-wrap">
+                <a href="/posts/apache-setenv/#disqus_thread" class="article-comment-link">Comments</a>
+            </div>
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>在Apache的環境下，如果要針對不同條件做不同的設定（例如Header），可以使用SetEnvIf來個別設置變數。</p>
+<p>而最近在接觸這個設定時遇到了一些問題，記錄一下解決方法。</p>
+<h2 id="問題">問題：</h2>
+<p>假設要對於符合 <code>/abc</code>與其底下的所有URL的Header加上<code>Cache-control</code>的設定，原本想說大概是這樣：</p>
+<pre><code>SetEnvIf Request_URI ^/abc* has-cache
+Header set Cache-control &quot;public,max-age=600&quot; env=has-cache
+</code></pre><p>結果發現沒有作用，怎麼改正規表達都不正確，但改成全部配對<code>(.*)</code>時又有作用。</p>
+<p>這時候google了半天，終於找到有類似的發問，根據<a href="https://stackoverflow.com/questions/58394912/apache-setenvif-request-uri-does-not-match-urls">這篇</a>的方法，可以檢查當下的Request_URI到底是什麼：</p>
+<pre><code>Header set X-Request-Uri &quot;%{Request_URI}e&quot; // 設定X-Request-Uri為Request_URI
+SetEnvIf Request_URI ^(.*)$ Request_URI1=$1 // 設定Request_URI1為當下配對到的URI(全部匹配)
+Header set X-Request-Uri1 &quot;%{Request_URI1}e&quot; // 設定X-Request-Uri1為上面匹配到的Request_URI1
+</code></pre><p>這時候檢查header發現：</p>
+<pre><code>X-Request-Uri: /abc/
+X-Request-Uri1: /index.php
+</code></pre><p>竟然會不一樣！</p>
+<p>推測應該是部分PHP的Framework為了讓網址不要出現index.php，會建議在.htaccess裡面設置如下的內容：</p>
+<pre><code>    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</code></pre><p>所以實際上在.htaccess的SetEnvIf拿到的Request_URI都會是index.php，而非我們在瀏覽器上面輸入的URI。（如有錯誤請跟我說！）</p>
+<h2 id="解法">解法：</h2>
+<p>由於無法使用SetEnvIf，只好使用mod_rewrite的RewriteCond與RewriteRule來達成目的。</p>
+<p>如果跟我遇到的情況一樣（.htaccess裡面有剛剛講的index.php處理），可以加上原本的網址參數：</p>
+<pre><code>RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?_uri=/$1 [QSA,L]
+</code></pre><p>接著就可以用QUERY_STRING來正確配對我們想要的網址了：</p>
+<pre><code>RewriteCond %{QUERY_STRING} ^_uri=/abc(.*)
+RewriteRule ^(.*)$ - [E=has-cache:1]
+Header set Cache-control &quot;public,max-age=600&quot; env=has-cache
+</code></pre>
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#問題">問題：</a></li>
+    <li><a href="#解法">解法：</a></li>
+  </ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/apache">Apache
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/.htaccess">.htaccess
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    
+    <a href="/posts/learn-java/06-templates/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Java學習筆記06-templates&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+
+</article>
+
+        
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "timoblog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2020 Timo&#39;s Note Blog
+            <br />
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos" target="_blank">Minos</a>
+        </div>
+    </div>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-162845066-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+</div>
+</body>
+</html>

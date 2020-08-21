@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timo&#39;s Note Blog</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="author" content="Timo Chiang">
+    <meta name="description" content="Timo&#39;s tech note">
+    
+
+        <meta property="og:title" content="Timo&#39;s Note Blog" />
+    <meta property="og:description" content="Timo&#39;s tech note" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:url" content="https://timochiang.github.io/" />
+    
+<link href="https://timochiang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Timo&#39;s Note Blog" />
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="https://timochiang.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://timochiang.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://timochiang.github.io/css/style.css">
+    
+
+    <meta name="generator" content="Hugo 0.68.3" />
+</head>
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://timochiang.github.io/">Timo&#39;s Note Blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    <section id="main" class="outer">
+        
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+            <div class="article-inner">
+                
+                
+                <header class="article-header">
+                    <h1 itemprop="name"><a class="article-title" href="/posts/use-github-pages-and-hugo-to-build-static-site/">使用GitHub Pages &#43; Hugo搭建靜態網站</a></h1>
+                </header>
+                
+                <div class="article-meta">
+                    <a href="/posts/use-github-pages-and-hugo-to-build-static-site/" class="article-date">
+                        <time datetime='2020-03-29T18:31:35.000&#43;09:00' itemprop="datePublished">2020-03-29</time>
+                    </a>
+                    
+                    
+                    <div class="post-categories">
+                        <div class="article-category">
+                            
+                            
+                            <a class="article-category-link" href="https://timochiang.github.io/categories/github">GitHub</a>
+                            
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="article-comment-link-wrap">
+                        <a href="/posts/use-github-pages-and-hugo-to-build-static-site/#disqus_thread" class="article-comment-link">Comments</a>
+                    </div>
+                    
+                </div>
+                <div class="article-entry" itemprop="articleBody">
+                    <p>
+                        
+                    <p>最近下定決心要開始寫技術文章，除了記錄下來自己的學習過程，也希望可以幫助到其他需要的人。</p>
+<p>由於之前也有嘗試寫過但因為懶惰而中斷。期望這次可以好好持續下去！</p>
+                    </p>
+                    <p class="article-more-link">
+                        <a href="/posts/use-github-pages-and-hugo-to-build-static-site/">Read More</a>
+                    </p>
+                </div>
+
+                
+                <footer class="article-footer">
+                    <ul class="article-tag-list">
+                        
+                        <li class="article-tag-list-item">
+                            <a class="article-tag-list-link" href="https://timochiang.github.io/tags/github-pages">GitHub Pages
+                            </a>
+                        </li>
+                        
+                        <li class="article-tag-list-item">
+                            <a class="article-tag-list-link" href="https://timochiang.github.io/tags/hugo">Hugo
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </footer>
+                
+            </div>
+        </article>
+        
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+            <div class="article-inner">
+                
+                
+                <div class="article-meta">
+                    <a href="/posts/aws-ssl-key/" class="article-date">
+                        <time datetime='0001-01-01T00:00:00.000&#43;00:00' itemprop="datePublished">0001-01-01</time>
+                    </a>
+                    
+                    
+                    
+                    <div class="article-comment-link-wrap">
+                        <a href="/posts/aws-ssl-key/#disqus_thread" class="article-comment-link">Comments</a>
+                    </div>
+                    
+                </div>
+                <div class="article-entry" itemprop="articleBody">
+                    <p>
+                        
+                    acm
+pair確認
+ SSL証明書ファイルのチェックサム取得  $ openssl x509 -noout -modulus -in &lt;SSL証明書ファイル&gt; | openssl md5  秘密鍵ファイルのチェックサム取得  $ openssl rsa -noout -modulus -in &lt;秘密鍵ファイル&gt; | openssl md5  CSRファイルのチェックサム取得  $ openssl req -noout -modulus -in &lt;CSRファイル&gt; | openssl md5 Certificate body：crt or pem（直接拿到或從pfx檔解出來）
+openssl pkcs12 -in export_MMC.pfx -clcerts -nokeys -out client_ssl.pem Enter Import Password: お客さん提供されたパスワード MAC verified OK Certificate private key*	private key 上傳到aCM要解鎖：
+openssl rsa -in private.pem -out PrivateKeyNoPW.
+                    </p>
+                    <p class="article-more-link">
+                        <a href="/posts/aws-ssl-key/">Read More</a>
+                    </p>
+                </div>
+
+                
+            </div>
+        </article>
+        
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+            <div class="article-inner">
+                
+                
+                <div class="article-meta">
+                    <a href="/posts/untitled/" class="article-date">
+                        <time datetime='0001-01-01T00:00:00.000&#43;00:00' itemprop="datePublished">0001-01-01</time>
+                    </a>
+                    
+                    
+                    
+                    <div class="article-comment-link-wrap">
+                        <a href="/posts/untitled/#disqus_thread" class="article-comment-link">Comments</a>
+                    </div>
+                    
+                </div>
+                <div class="article-entry" itemprop="articleBody">
+                    <p>
+                        
+                    sequenceDiagram Alice -&gt;&gt; Bob: Hello Bob, how are you? Bob--&gt;&gt;John: How about you John? Bob--x Alice: I am good thanks! Bob-x John: I am good thanks! Note right of John: Bob thinks a long&lt;br/&gt;long time, so long&lt;br/&gt;that the text does&lt;br/&gt;not fit on a row. Bob--&gt;Alice: Checking with John... Alice-&gt;John: Yes... John, how are you? 
+                    </p>
+                    <p class="article-more-link">
+                        <a href="/posts/untitled/">Read More</a>
+                    </p>
+                </div>
+
+                
+            </div>
+        </article>
+        
+
+        
+
+<nav id="page-nav">
+    
+    <a href="/" rel="prev" class="extend prev">&laquo; Prev</a>
+    
+    
+    
+    <a href="/">1</a>
+    
+    
+    
+    <span class="page-number current">2</span>
+    
+    
+
+    
+</nav>
+
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2020 Timo&#39;s Note Blog
+            <br />
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos" target="_blank">Minos</a>
+        </div>
+    </div>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-162845066-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+</div>
+</body>
+</html>
