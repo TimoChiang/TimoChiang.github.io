@@ -119,27 +119,5 @@
 &lt;p&gt;由於之前也有嘗試寫過但因為懶惰而中斷。期望這次可以好好持續下去！&lt;/p&gt;</description>
     </item>
     
-    <item>
-      <title></title>
-      <link>https://timochiang.github.io/posts/aws-ssl-key/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://timochiang.github.io/posts/aws-ssl-key/</guid>
-      <description>acm
-pair確認
- SSL証明書ファイルのチェックサム取得  $ openssl x509 -noout -modulus -in &amp;lt;SSL証明書ファイル&amp;gt; | openssl md5  秘密鍵ファイルのチェックサム取得  $ openssl rsa -noout -modulus -in &amp;lt;秘密鍵ファイル&amp;gt; | openssl md5  CSRファイルのチェックサム取得  $ openssl req -noout -modulus -in &amp;lt;CSRファイル&amp;gt; | openssl md5 Certificate body：crt or pem（直接拿到或從pfx檔解出來）
-openssl pkcs12 -in export_MMC.pfx -clcerts -nokeys -out client_ssl.pem Enter Import Password: お客さん提供されたパスワード MAC verified OK Certificate private key*	private key 上傳到aCM要解鎖：
-openssl rsa -in private.pem -out PrivateKeyNoPW.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://timochiang.github.io/posts/untitled/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://timochiang.github.io/posts/untitled/</guid>
-      <description>sequenceDiagram Alice -&amp;gt;&amp;gt; Bob: Hello Bob, how are you? Bob--&amp;gt;&amp;gt;John: How about you John? Bob--x Alice: I am good thanks! Bob-x John: I am good thanks! Note right of John: Bob thinks a long&amp;lt;br/&amp;gt;long time, so long&amp;lt;br/&amp;gt;that the text does&amp;lt;br/&amp;gt;not fit on a row. Bob--&amp;gt;Alice: Checking with John... Alice-&amp;gt;John: Yes... John, how are you? </description>
-    </item>
-    
   </channel>
 </rss>
