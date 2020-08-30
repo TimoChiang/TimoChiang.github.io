@@ -180,6 +180,7 @@ $ sdk default java 11.0.7.hs-adpt
 <li>Java：選擇安裝的Java版本</li>
 </ul>
 <p>Dependencies：已經知道的依賴package可以從這裡選，不選的話也可以之後自行加上去</p>
+<p>自行加上去<code>spring.datasource.url</code>後面追加<code>?useUnicode=yes&amp;characterEncoding=UTF-8</code>防止寫入資料庫時亂碼）</p>
 <p>通常會裝：</p>
 <p>Spring Web：Controller GET method Web必裝</p>
 <p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-devtools">Spring Boot DevTools</a>：自動重啟，IDE開發加速用</p>
@@ -188,6 +189,7 @@ $ sdk default java 11.0.7.hs-adpt
 <p>另外：</p>
 <p><a href="https://www.thymeleaf.org/">Thymeleaf</a>：要回傳HTML內容的時候的template套件，也有其他可以選擇不過目前只用過這個</p>
 <p>好了之後就按GENERATE，就會把zip檔案下載下來。解壓縮後直接用IntelliJ IDEA打開，IDE裝完環境後就可以開始開發了！</p>
+<p>2020/08/30追記：Project作成後，在<code>build.gradle</code>可以再追加Dependencies。追加後需要Reload（<code>./gradlew --refresh-dependencies</code> 或 IntelliJ IDEA 側邊欄的Gradle -&gt; Reload All Gradle Projects）</p>
 <h3 id="方法二直接用intellij-idea作成project">方法二：直接用IntelliJ IDEA作成Project</h3>
 <p>另外在IntelliJ IDEA裡也可以直接使用Spring initializr來開啟新專案，填的內容就跟網頁上一樣。</p>
 <p>點選<code>Create New Project</code>→左側的<code>Spring initializr</code>→確認JavaSDK後Next</p>
