@@ -6,10 +6,20 @@
     <description>Recent content on Timo&#39;s Note Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sat, 22 Aug 2020 08:00:56 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 20 Sep 2020 08:00:56 +0900</lastBuildDate>
     
 	<atom:link href="https://timochiang.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SSL Certificate相關指令彙整</title>
+      <link>https://timochiang.github.io/posts/aws-ssl-key/</link>
+      <pubDate>Sun, 20 Sep 2020 08:00:56 +0900</pubDate>
+      
+      <guid>https://timochiang.github.io/posts/aws-ssl-key/</guid>
+      <description>&lt;p&gt;雖然現在已經可以自動化的更新SSL憑證（例如AWS的&lt;a href=&#34;https://aws.amazon.com/certificate-manager/&#34;&gt;ACM&lt;/a&gt;或是&lt;a href=&#34;https://letsencrypt.org/&#34;&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt;），但仍然有很多網站目前還是走手動設置的路線。&lt;/p&gt;
+&lt;p&gt;記錄一下流程與可能會需要用到的指令。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Apache的SetEnvIf無法正確比對Request_URI的解決辦法</title>

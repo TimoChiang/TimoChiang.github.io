@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title> // Timo&#39;s Note Blog</title>
+    <title>SSL Certificate相關指令彙整 // Timo&#39;s Note Blog</title>
 
     <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -10,7 +10,7 @@
     <meta name="description" content="Timo&#39;s tech note">
     
 
-        <meta property="og:title" content="" />
+        <meta property="og:title" content="SSL Certificate相關指令彙整" />
     <meta property="og:description" content="Timo&#39;s tech note" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en" />
@@ -51,11 +51,24 @@
         <article class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">SSL Certificate相關指令彙整</h1>
+        </header>
+        
         <div class="article-meta">
             <a href="/posts/aws-ssl-key/" class="article-date">
-                <time datetime='0001-01-01T00:00:00.000&#43;00:00' itemprop="datePublished">0001-01-01</time>
+                <time datetime='2020-09-20T08:00:56.000&#43;09:00' itemprop="datePublished">2020-09-20</time>
             </a>
             
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="https://timochiang.github.io/categories/server">Server</a>
+                    
+                </div>
+            </div>
             
             
             <div class="article-comment-link-wrap">
@@ -64,37 +77,110 @@
             
         </div>
         <div class="article-entry" itemprop="articleBody">
-            <p>acm</p>
-<p>pair確認</p>
+            <p>雖然現在已經可以自動化的更新SSL憑證（例如AWS的<a href="https://aws.amazon.com/certificate-manager/">ACM</a>或是<a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a>），但仍然有很多網站目前還是走手動設置的路線。</p>
+<p>記錄一下流程與可能會需要用到的指令。</p>
+<h2 id="ssl憑證申請流程與相關指令">SSL憑證申請流程與相關指令</h2>
+<p>簡單講一下申請憑證的流程：</p>
+<ol>
+<li>
+<p>利用Terminal製作一個申請憑證用的private key</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># -des3：指定用哪種加密方式，也可以選擇不用密碼</span>
+$ openssl genrsa -des3 -out ssl_private.key <span style="color:#ae81ff">2048</span>
+Generating RSA private key, <span style="color:#ae81ff">2048</span> bit long modulus
+....................................+++
+...................................+++
+e is <span style="color:#ae81ff">65537</span> <span style="color:#f92672">(</span>0x10001<span style="color:#f92672">)</span>
+Enter pass phrase <span style="color:#66d9ef">for</span> ssl_private.key:
+Verifying - Enter pass phrase <span style="color:#66d9ef">for</span> ssl_private.key:
+</code></pre></div></li>
+<li>
+<p>使用1的key生成CSR檔案</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl req -new -key ssl_private.key -out server.csr
+Enter pass phrase <span style="color:#66d9ef">for</span> ssl_private.key:
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter <span style="color:#e6db74">&#39;.&#39;</span>, the field will be left blank.
+-----
+Country Name <span style="color:#f92672">(</span><span style="color:#ae81ff">2</span> letter code<span style="color:#f92672">)</span> <span style="color:#f92672">[]</span>:
+State or Province Name <span style="color:#f92672">(</span>full name<span style="color:#f92672">)</span> <span style="color:#f92672">[]</span>:
+Locality Name <span style="color:#f92672">(</span>eg, city<span style="color:#f92672">)</span> <span style="color:#f92672">[]</span>:
+Organization Name <span style="color:#f92672">(</span>eg, company<span style="color:#f92672">)</span> <span style="color:#f92672">[]</span>:
+Organizational Unit Name <span style="color:#f92672">(</span>eg, section<span style="color:#f92672">)</span> <span style="color:#f92672">[]</span>:
+Common Name <span style="color:#f92672">(</span>eg, fully qualified host name<span style="color:#f92672">)</span> <span style="color:#f92672">[]</span>:
+Email Address <span style="color:#f92672">[]</span>:
+   
+Please enter the following <span style="color:#e6db74">&#39;extra&#39;</span> attributes
+to be sent with your certificate request
+A challenge password <span style="color:#f92672">[]</span>:
+</code></pre></div></li>
+<li>
+<p>把2的CSR提交到SSL憑證發行網站（如<a href="https://tw.godaddy.com">GoDaddy</a>），獲得CRT檔案</p>
+</li>
+<li>
+<p>把1的Key與3的CRT與檔案（另外還有SSL憑證發行網站提供的CertificateChainFile）放到Server，或是ACM等憑證管理服務</p>
+<pre><code>以Apache為例子：
+SSLCertificateFile /etc/ssl/ssl.crt
+SSLCertificateKeyFile /etc/ssl/ssl_private.key
+SSLCertificateChainFile /etc/ssl/ssl_chain.crt
+</code></pre></li>
+</ol>
+<h2 id="key解密">Key解密</h2>
+<p>假設自己建立或是從別人那邊拿到的Private Key是加密過的。在Server端設定完（上面步驟4）後，每次啟動服務都得輸入密碼，這時候如果不希望輸入密碼就得提供解密的Private Key。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl rsa -in ssl_private.key -out ssl_private_no_password.key
+</code></pre></div><p>另外如果使用ACM(<a href="https://aws.amazon.com/certificate-manager/">AWS Certificate Manager</a>)的話，加密的Private Key是沒辦法直接上傳給ACM的。否則會顯示<code>The certificate private key provided is not in a valid PEM format.</code>的錯誤訊息。</p>
+<h2 id="key與檔案是否配對">Key與檔案是否配對</h2>
+<p>有時候並不是每個憑證申請的步驟都是自己弄，有可能從別人那邊拿到CRT檔案，上傳到Server才發現跟自己手上的Key不符合。其實可以藉由openssl指令查看checksum是否一致：</p>
 <ul>
-<li>SSL証明書ファイルのチェックサム取得</li>
+<li>
+<p>Key的checksum：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl rsa -noout -modulus -in ssl_private.key | openssl md5
+</code></pre></div></li>
+<li>
+<p>CRT的checksum：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl x509 -noout -modulus -in ssl.crt | openssl md5
+</code></pre></div></li>
+<li>
+<p>CSR的checksum：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl req -noout -modulus -in server.csr | openssl md5
+</code></pre></div></li>
 </ul>
-<pre><code>$ openssl x509 -noout -modulus -in &lt;SSL証明書ファイル&gt; | openssl md5
-</code></pre><ul>
-<li>秘密鍵ファイルのチェックサム取得</li>
+<h2 id="其他跟憑證有關的檔案">其他跟憑證有關的檔案</h2>
+<p>Private Key的副檔名不一定要<code>.key</code>，也可以是<code>.pem</code>等等，不管怎樣內容大概都是像這樣：</p>
+<pre><code>-----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDNlz0m63lp7A1e
+...
+-----END PRIVATE KEY-----
+</code></pre><p>另外有時候相關負責人可能會只丟給你一個<code>.pfx</code>檔案，其實這檔案可以輸出CRT與Private Key：</p>
+<ul>
+<li>
+<p>導出CRT：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl pkcs12 -in server.pfx -clcerts -nokeys -out ssl.crt
+</code></pre></div></li>
+<li>
+<p>導出Private Key：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl pkcs12 -in server.pfx -nocerts -out ssl_private.key
+</code></pre></div></li>
 </ul>
-<pre><code>$ openssl rsa -noout -modulus -in &lt;秘密鍵ファイル&gt; | openssl md5
-</code></pre><ul>
-<li>CSRファイルのチェックサム取得</li>
-</ul>
-<pre><code>$ openssl req -noout -modulus -in &lt;CSRファイル&gt; | openssl md5
-</code></pre><p>Certificate body：crt or pem（直接拿到或從pfx檔解出來）</p>
-<pre><code>openssl pkcs12 -in export_MMC.pfx -clcerts -nokeys -out client_ssl.pem
-Enter Import Password: お客さん提供されたパスワード
-MAC verified OK
-</code></pre><p>Certificate private key*	private key 上傳到aCM要解鎖：</p>
-<pre><code>openssl rsa -in private.pem -out PrivateKeyNoPW.pem
-Enter pass phrase for private.pem:先ほど設定されたパスワード
-writing RSA key
-</code></pre><p>Certificate chain ：chain,多個檔案就連在一起就好</p>
-
+<p>參考資料：</p>
+<p><a href="https://virtualbonzo.com/2017/11/01/aws-error-importing-certificate-private-key/">AWS – Error Importing Certificate Private Key</a></p>
+<p><a href="https://qiita.com/sumida0713/items/72fcb2b0ab926c906507">SSL証明書・秘密鍵・CSRファイルのペア確認方法</a></p>
         </div>
 
         
         
         <div class="article-toc" >
             <h3>Contents</h3>
-            <nav id="TableOfContents"></nav>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#ssl憑證申請流程與相關指令">SSL憑證申請流程與相關指令</a></li>
+    <li><a href="#key解密">Key解密</a></li>
+    <li><a href="#key與檔案是否配對">Key與檔案是否配對</a></li>
+    <li><a href="#其他跟憑證有關的檔案">其他跟憑證有關的檔案</a></li>
+  </ul>
+</nav>
         </div>
         
         
@@ -102,19 +188,39 @@ writing RSA key
         
 
 
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/ssl">SSL
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/acm">ACM
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/openssl">openssl
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://timochiang.github.io/tags/ssl-certificate">SSL Certificate
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
         
     </div>
     <nav id="article-nav">
     
-    <a href="/posts/use-github-pages-and-hugo-to-build-static-site/" id="article-nav-newer" class="article-nav-link-wrap">
-        <div class="article-nav-title"><span>&lt;</span>&nbsp;
-            使用GitHub Pages &#43; Hugo搭建靜態網站
-        </div>
-    </a>
     
-    
-    <a href="/posts/untitled/" id="article-nav-older" class="article-nav-link-wrap">
-        <div class="article-nav-title">&nbsp;<span>&gt;</span></div>
+    <a href="/posts/apache-setenv/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Apache的SetEnvIf無法正確比對Request_URI的解決辦法&nbsp;<span>&gt;</span></div>
     </a>
     
 </nav>
